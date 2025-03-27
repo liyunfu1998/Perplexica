@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { BookOpenText, Home, Search, SquarePen, Settings } from 'lucide-react';
+import { BookOpenText, Home, Search, SquarePen, Settings, ScanSearch } from 'lucide-react';
 import Link from 'next/link';
 import { useSelectedLayoutSegments } from 'next/navigation';
 import React, { useState, type ReactNode } from 'react';
@@ -35,6 +35,12 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
       active: segments.includes('library'),
       label: 'Library',
     },
+    {
+      icon: ScanSearch,
+      href: '/focus-settings',
+      active: segments.includes('focus-settings'),
+      label: 'Focus Settings',
+    }
   ];
 
   return (

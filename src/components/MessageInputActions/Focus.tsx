@@ -1,3 +1,4 @@
+"use client"
 import {
   BadgePercent,
   ChevronDown,
@@ -14,7 +15,8 @@ import {
   Transition,
 } from '@headlessui/react';
 import { SiReddit, SiYoutube } from '@icons-pack/react-simple-icons';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { FocusMode, getIconByKey } from '@/app/focus-settings/page';
 
 const focusModes = [
   {
@@ -62,6 +64,26 @@ const Focus = ({
   focusMode: string;
   setFocusMode: (mode: string) => void;
 }) => {
+  const [modes, setModes] = useState<FocusMode[]>([]);
+  // 获取接口数据
+  useEffect(() => {
+    const fetchModes = async () => {
+      
+      try {
+        const response = await fetch('/api/focus-modes');
+        const data = await response.json();
+        setModes(
+          data.map((mode: FocusMode) => ({
+            ...mode,
+            icon: getIconByKey(mode.key),
+          })),
+        );
+      } catch (error) {
+        console.error('Error fetching focus modes:', error);
+      }
+    };
+    fetchModes();
+  }, []);
   return (
     <Popover className="relative w-full max-w-[15rem] md:max-w-md lg:max-w-lg mt-[6.5px]">
       <PopoverButton
@@ -70,9 +92,9 @@ const Focus = ({
       >
         {focusMode !== 'webSearch' ? (
           <div className="flex flex-row items-center space-x-1">
-            {focusModes.find((mode) => mode.key === focusMode)?.icon}
+            {modes.find((mode) => mode.key === focusMode)?.icon}
             <p className="text-xs font-medium hidden lg:block">
-              {focusModes.find((mode) => mode.key === focusMode)?.title}
+              {modes.find((mode) => mode.key === focusMode)?.title}
             </p>
             <ChevronDown size={20} className="-translate-x-1" />
           </div>
@@ -94,7 +116,7 @@ const Focus = ({
       >
         <PopoverPanel className="absolute z-10 w-64 md:w-[500px] left-0">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 bg-light-primary dark:bg-dark-primary border rounded-lg border-light-200 dark:border-dark-200 w-full p-4 max-h-[200px] md:max-h-none overflow-y-auto">
-            {focusModes.map((mode, i) => (
+            {modes.map((mode, i) => (
               <PopoverButton
                 onClick={() => setFocusMode(mode.key)}
                 key={i}

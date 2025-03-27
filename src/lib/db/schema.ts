@@ -26,3 +26,13 @@ export const chats = sqliteTable('chats', {
     .$type<File[]>()
     .default(sql`'[]'`),
 });
+
+export const focusModes = sqliteTable('focus_modes', {
+  key: text('key').primaryKey(),
+  title: text('title').notNull(),
+  description: text('description'),
+  api_source: text('api_source'),
+  icon: text('icon'),
+  createdAt: text('created_at').notNull().$default(() => new Date().toISOString()),
+  updatedAt: text('updated_at').notNull().$default(() => new Date().toISOString()),
+});
