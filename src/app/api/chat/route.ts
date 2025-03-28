@@ -272,7 +272,7 @@ export const POST = async (req: Request) => {
         { status: 400 },
       );
     }
-
+    console.log('tools', mcpClient.getTools())
     const stream = await handler.searchAndAnswer(
       message.content,
       history,
@@ -280,6 +280,7 @@ export const POST = async (req: Request) => {
       embedding,
       body.optimizationMode,
       body.files,
+      mcpClient.getTools()
     );
 
     const responseStream = new TransformStream();

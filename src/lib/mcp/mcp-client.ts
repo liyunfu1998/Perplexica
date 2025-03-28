@@ -35,8 +35,12 @@ export function MCPClient(){
     }
   }
 
+  const getTools = () => {
+    return tools
+  }
+
   return {
     connectToServer,
-    tools
+    getTools
   }
 }
