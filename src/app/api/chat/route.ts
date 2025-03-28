@@ -21,7 +21,8 @@ import {
   getCustomOpenaiModelName,
 } from '@/lib/config';
 import { searchHandlers } from '@/lib/search';
-
+import { MCPClient } from '@/lib/mcp/mcp-client';
+import * as path from 'path'
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
@@ -219,7 +220,8 @@ export const POST = async (req: Request) => {
 
     let llm: BaseChatModel | undefined;
     let embedding = embeddingModel.model;
-
+    let mcpClient = MCPClient()
+    await mcpClient.connectToServer(path.join(process.cwd(), 'src', 'lib', 'mcp', 'index.mjs'))
     if (body.chatModel?.provider === 'custom_openai') {
       llm = new ChatOpenAI({
         openAIApiKey: getCustomOpenaiApiKey(),
